@@ -176,6 +176,7 @@ docker compose exec web python manage.py test shoes_api -v 2
 10. Order total_value calculation using Pythonic `sum()` generator expression
 11. Comprehensive test coverage for serializers and API endpoints
 12. API documentation with Swagger/OpenAPI using `drf-spectacular`
+13. CI/CD pipeline with GitHub Actions (custom actions: setup, lint, security, test)
 
 ## API Documentation
 
@@ -184,5 +185,19 @@ Interactive Swagger UI available at: http://127.0.0.1:8000/api/docs/
 Alternative documentation formats:
 - ReDoc: http://127.0.0.1:8000/api/redoc/
 - OpenAPI Schema: http://127.0.0.1:8000/api/schema/
+
+## Continuous Integration
+
+**Status:** ⏸️ Temporarily paused due to GitHub Enterprise restrictions.
+
+Workflow configured at `.github/workflows/tests.yml` with 4 jobs:
+- **setup**: Install Python dependencies
+- **lint**: Code style and quality checks (ruff)
+- **security**: Security vulnerability scanning (bandit)
+- **test**: Run test suite and generate coverage reports
+
+Custom actions stored in `.github/actions/` for modularity and reusability.
+
+**To enable:** Contact GitHub Enterprise Administrator to enable GitHub-hosted runners, then uncomment `push` and `pull_request` triggers in workflow.
 
 API available at: http://127.0.0.1:8000

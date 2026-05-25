@@ -155,6 +155,25 @@ docker compose exec web coverage run --source='shoes_api' manage.py test shoes_a
 docker compose exec web coverage report
 ```
 
+## Continuous Integration (CI/CD)
+
+**Status:** ⏸️ Temporarily paused
+
+A GitHub Actions workflow has been configured at `.github/workflows/tests.yml` with the following jobs:
+- **setup**: Install dependencies
+- **lint**: Code style checks (ruff)
+- **security**: Security scanning (bandit)
+- **test**: Run test suite and generate coverage reports
+
+Each job is implemented as a reusable custom action in `.github/actions/`.
+
+**Current limitation:** GitHub-hosted runners are disabled for this repository (GitHub Enterprise restriction). To enable CI/CD automation:
+1. Contact your GitHub Enterprise Administrator
+2. Request to enable "GitHub-hosted runners" for this repository
+3. Once enabled, uncomment the `push` and `pull_request` triggers in `.github/workflows/tests.yml`
+
+Alternatively, a self-hosted runner can be configured on your own infrastructure.
+
 ## Code Quality Improvements
 
 This project implements systematic code quality improvements:
@@ -173,6 +192,7 @@ This project implements systematic code quality improvements:
 | 10 | Calculation Logic | `sum()` generator for `Order.total_value` |
 | 11 | Test Coverage | 15 comprehensive tests across serializers and API |
 | 12 | API Documentation | Swagger/OpenAPI with `drf-spectacular` |
+| 13 | CI/CD Pipeline | GitHub Actions with custom actions (setup, lint, security, test) |
 
 **Test Results:** ✅ All 15 tests passing
 - 4 tests: CPF validation, formatting, uniqueness
