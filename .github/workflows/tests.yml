@@ -37,6 +37,7 @@ permissions:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     container:
       image: python:3.13-slim
 
@@ -47,6 +48,7 @@ jobs:
 
   security:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     container:
       image: python:3.13-slim
 
@@ -59,12 +61,14 @@ jobs:
         uses: actions/upload-artifact@v7
         if: always()
         with:
+          retention-days: 7
           name: bandit-report
           path: study_shoes_store/bandit-report.json
           if-no-files-found: ignore
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     container:
       image: python:3.13-slim
 
@@ -78,6 +82,7 @@ jobs:
         uses: actions/upload-artifact@v7
         if: always()
         with:
+          retention-days: 7
           name: coverage-report
           path: |
             study_shoes_store/.coverage
