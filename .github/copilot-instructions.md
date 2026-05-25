@@ -7,17 +7,23 @@ This is a local study project — there is no production environment, no Docker 
 
 ## Stack
 
-- **Python** 3.12
+- **Python** 3.13
 - **Django** 6.0.5
 - **Django REST Framework** 3.17.1
 - **django-filter** 25.2
 - **validate-docbr** 2.0.0 (CPF validation)
+- **python-decouple** 3.8 (environment variables)
+- **gunicorn** 23.0.0 (WSGI server)
+- **whitenoise** 6.9.0 (static files)
 - **SQLite** (local database)
-- **Docker + Docker Compose** (Ubuntu 24.04 base image, used only for local testing)
+- **Docker + Docker Compose** (python:3.13-slim base image, used only for local testing)
 
 ## Project structure
 
 ```
+env/
+  .env                # local environment variables (not versioned)
+  .env.example        # template for environment variables
 study_shoes_store/
   manage.py
   requirements.txt
@@ -40,6 +46,8 @@ entrypoint.sh
 - **Seller** uses Django's built-in `User` model.
 - **CPF** is stored without formatting (11 digits) but accepted and returned formatted (`xxx.xxx.xxx-xx`).
 - **`total_value`** on `Order` is computed automatically in `OrderSerializer.to_internal_value` by summing the `value` of all related products.
+- **`value`** (`Product`) and **`total_value`** (`Order`) use `DecimalField(max_digits=10, decimal_places=2)` for monetary precision.
+- **`order_number`** on `Order` has `unique=True`.
 
 ## API endpoints
 
@@ -63,7 +71,7 @@ Read requests (`GET`) on orders use `ListOrderSerializer` (nested objects); writ
 - Serializers live in `shoes_api/serializers.py`; views in `shoes_api/views.py`.
 - URL routing uses DRF's `DefaultRouter` registered in `shoes_api/urls.py`.
 - No custom pagination class — uses DRF default page size settings.
-- Colour choices for `Product` are defined as a list of tuples directly on the model field.
+- Colour choices for `Product` are defined as `COLOUR_CHOICES` class constant on the model.
 
 ## Running locally (Docker Compose)
 
@@ -138,5 +146,49 @@ docker system prune -a
 # Remove all unused images, networks, containers and volumes
 docker system prune -a --volumes
 ```
+
+## Environment variables setup
+
+Copy the example file before running for the first time:
+```bash
+cp env/.env.example env/.env
+```
+
+Edit `env/.env` with your values. Variables read by the project:
+
+| Variable | Description | Default in `.env.example` |
+|---|---|---|
+| `SECRET_KEY` | Django secret key | placeholder |
+| `DEBUG` | Debug mode | `False` |
+| `ALLOWED_HOSTS` | Allowed hosts (comma-separated) | `localhost,127.0.0.1` |
+| `CSRF_TRUSTED_ORIGINS` | Trusted origins for CSRF (comma-separated) | `http://localhost:8000,http://127.0.0.1:8000` |
+| `DJANGO_SUPERUSER_USERNAME` | Admin username created on first run | `admin` |
+| `DJANGO_SUPERUSER_EMAIL` | Admin email | `admin@example.com` |
+| `DJANGO_SUPERUSER_PASSWORD` | Admin password | `change-me` |
+
+## Django management commands (inside the container)
+
+```bash
+# Run any management command inside the running container
+docker compose exec web python manage.py <command>
+
+# Apply pending migrations
+docker compose exec web python manage.py migrate
+
+# Generate migrations after changing models
+docker compose exec web python manage.py makemigrations shoes_api --name <migration_name>
+
+# Copy a generated migration file from the container to the host
+docker compose cp web:/var/www/study_shoes_store/shoes_api/migrations/<file>.py \
+  /absolute/path/to/study_shoes_store/shoes_api/migrations/
+
+# Open a Django shell inside the container
+docker compose exec web python manage.py shell
+
+# Create a superuser manually
+docker compose exec web python manage.py createsuperuser
+```
+
+> **Note:** migrations must always be copied from the container to the host and committed to the repository, since the project directory is not mounted as a volume — it is copied into the image at build time.
 
 API available at: http://127.0.0.1:8000
