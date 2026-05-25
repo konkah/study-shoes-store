@@ -82,6 +82,9 @@ docker compose up --build
 # Build and start in background
 docker compose up --build -d
 
+# Start without rebuilding (after first build)
+docker compose up -d
+
 # View logs of all services (when running in background)
 docker compose logs -f
 
@@ -93,59 +96,19 @@ docker compose stop
 
 # Stop and remove containers, images and volumes
 docker compose down --rmi all --volumes
-
-# --- Single container ---
-
-# Build the image
-docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
-
-# Run a single container in background
-docker run --name shoes-store -p 8000:8000 -d study_shoes_store
-
-# Run a single container (blocking terminal)
-docker run --name shoes-store -p 8000:8000 -it study_shoes_store
-
-# Stop a single container
-docker stop shoes-store
-
-# Restart a stopped container
-docker start shoes-store
-
-# Remove a stopped container
-docker rm shoes-store
-
-# Force remove a running container
-docker rm -f shoes-store
-
-# Remove the image
-docker rmi study_shoes_store
-
-# Force remove the image (even if used by a container)
-docker rmi -f study_shoes_store
-
-# --- Inspection ---
-
-# List running containers (name, image, status, ports)
-docker ps
-
-# List all containers including stopped ones
-docker ps -a
-
-# Show detailed info of a container (network, ports, mounts, etc.)
-docker inspect <container_name>
-
-# List networks
-docker network ls
-
-# Remove all stopped containers, unused networks and dangling images
-docker system prune
-
-# Remove all unused images (not just dangling ones)
-docker system prune -a
-
-# Remove all unused images, networks, containers and volumes
-docker system prune -a --volumes
 ```
+
+### Docker Volume Configuration
+
+The project uses Docker volumes for **live code reloading** during development:
+- `./study_shoes_store` → `/var/www/study_shoes_store` (app code)
+- `./env` → `/var/www/env` (environment configuration)
+
+This enables:
+- ✅ Instant code reloading without rebuild
+- ✅ Direct access to generated migration files
+- ✅ Real-time test execution
+- ✅ No file copying needed between container and host
 
 ## Environment variables setup
 
@@ -178,10 +141,6 @@ docker compose exec web python manage.py migrate
 # Generate migrations after changing models
 docker compose exec web python manage.py makemigrations shoes_api --name <migration_name>
 
-# Copy a generated migration file from the container to the host
-docker compose cp web:/var/www/study_shoes_store/shoes_api/migrations/<file>.py \
-  /absolute/path/to/study_shoes_store/shoes_api/migrations/
-
 # Open a Django shell inside the container
 docker compose exec web python manage.py shell
 
@@ -189,7 +148,7 @@ docker compose exec web python manage.py shell
 docker compose exec web python manage.py createsuperuser
 ```
 
-> **Note:** migrations must always be copied from the container to the host and committed to the repository, since the project directory is not mounted as a volume — it is copied into the image at build time.
+> **Note:** With Docker volumes enabled, migration files are generated directly on the host within the `shoes_api/migrations/` directory.
 
 ## Code Quality & Testing
 

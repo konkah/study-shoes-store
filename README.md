@@ -21,6 +21,9 @@ docker compose up --build
 # Build and start in background
 docker compose up --build -d
 
+# Start without rebuilding (after first build)
+docker compose up -d
+
 # View logs of all services (when running in background)
 docker compose logs -f
 
@@ -32,9 +35,23 @@ docker compose stop
 
 # Stop and remove containers, images and volumes
 docker compose down --rmi all --volumes
+```
 
-# --- Single container ---
+### Docker Volume Configuration
 
+The project uses Docker volumes for **live code reloading** during development:
+- `./study_shoes_store` → `/var/www/study_shoes_store` (app code)
+- `./env` → `/var/www/env` (environment configuration)
+
+This enables:
+- ✅ Instant code reloading without rebuild
+- ✅ Direct access to generated migration files
+- ✅ Real-time test execution
+- ✅ No file copying needed between container and host
+
+### Single container (manual Docker)
+
+```bash
 # Build the image
 docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
 
@@ -61,8 +78,11 @@ docker rmi study_shoes_store
 
 # Force remove the image (even if used by a container)
 docker rmi -f study_shoes_store
+```
 
-# --- Inspection ---
+### Docker inspection and cleanup
+
+```bash
 
 # List running containers (name, image, status, ports)
 docker ps
@@ -97,10 +117,6 @@ docker compose exec web python manage.py migrate
 # Generate migrations after changing models
 docker compose exec web python manage.py makemigrations shoes_api --name <migration_name>
 
-# Copy a generated migration file from the container to the host
-docker compose cp web:/var/www/study_shoes_store/shoes_api/migrations/<file>.py \
-  /absolute/path/to/study_shoes_store/shoes_api/migrations/
-
 # Open a Django shell
 docker compose exec web python manage.py shell
 
@@ -108,7 +124,7 @@ docker compose exec web python manage.py shell
 docker compose exec web python manage.py createsuperuser
 ```
 
-> **Note:** migration files generated inside the container must be copied to the host and committed to the repository. The project directory is copied into the image at build time and is not mounted as a volume.
+> **Note:** With Docker volumes enabled, migration files are generated directly on the host. No copying needed!
 
 ## Running tests
 
