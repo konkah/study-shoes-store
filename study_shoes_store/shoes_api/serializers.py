@@ -31,7 +31,8 @@ class ProductSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     def to_representation(self, data):
         data = super(ClientSerializer, self).to_representation(data)
-        data['cpf'] = data['cpf'][0:3] + '.' + data['cpf'][3:6] + '.' + data['cpf'][6:9] + '-' + data['cpf'][9:11]
+        cpf = CPF()
+        data['cpf'] = cpf.mask(data['cpf'])
         return data
 
     def to_internal_value(self, data):
@@ -71,12 +72,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         data = super(OrderSerializer, self).to_internal_value(data)
-
-        total_value = 0
-        for product in data['products']:
-            total_value = total_value + product.value
-        data['total_value'] = total_value
-
+        data['total_value'] = sum(p.value for p in data['products'])
         return data
 
 class ListOrderSerializer(serializers.ModelSerializer):
