@@ -1,5 +1,11 @@
 from .models import Batch, Product, Client, Order
-from .serializers import BatchSerializer, ProductSerializer, ClientSerializer, OrderSerializer, ListOrderSerializer
+from .serializers import (
+    BatchSerializer,
+    ProductSerializer,
+    ClientSerializer,
+    OrderSerializer,
+    ListOrderSerializer,
+)
 from rest_framework import viewsets
 from rest_framework.permissions import SAFE_METHODS
 

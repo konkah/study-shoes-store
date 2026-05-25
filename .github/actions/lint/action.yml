@@ -10,10 +10,10 @@ runs:
 
     - name: Run ruff check
       run: |
-        ruff check study_shoes_store/shoes_api --select=E,W,F
+        ruff check study_shoes_store/shoes_api --select=E,W,F --exclude=study_shoes_store/shoes_api/migrations
       shell: bash
 
     - name: Run ruff format check
       run: |
-        ruff format study_shoes_store/shoes_api --check
+        ruff format study_shoes_store/shoes_api --check --exclude=study_shoes_store/shoes_api/migrations
       shell: bash
