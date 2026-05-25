@@ -6,3 +6,5 @@ Markdown==3.10.2
 python-decouple==3.8
 sqlparse==0.5.5
 validate-docbr==2.0.0
+gunicorn==23.0.0
+whitenoise==6.9.0
