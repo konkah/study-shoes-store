@@ -4,19 +4,77 @@ author: Karlos Helton Braga
 
 ## How to run the project
 
-First, build the Docker image from the Dockerfile available in the repository:
+```bash
+# Build and start (blocking terminal)
+docker compose up --build
 
-```
+# Build and start in background
+docker compose up --build -d
+
+# View logs of all services (when running in background)
+docker compose logs -f
+
+# View logs of a specific service
+docker compose logs -f web
+
+# Stop containers
+docker compose stop
+
+# Stop and remove containers, images and volumes
+docker compose down --rmi all --volumes
+
+# --- Single container ---
+
+# Build the image
 docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
-```
 
-Then, run the container:
+# Run a single container in background
+docker run --name shoes-store -p 8000:8000 -d study_shoes_store
 
-```
-docker run --name shoes-store -it -p 8000:8000 study_shoes_store
-```
+# Run a single container (blocking terminal)
+docker run --name shoes-store -p 8000:8000 -it study_shoes_store
 
-To stop, press CTRL+C.
+# Stop a single container
+docker stop shoes-store
+
+# Restart a stopped container
+docker start shoes-store
+
+# Remove a stopped container
+docker rm shoes-store
+
+# Force remove a running container
+docker rm -f shoes-store
+
+# Remove the image
+docker rmi study_shoes_store
+
+# Force remove the image (even if used by a container)
+docker rmi -f study_shoes_store
+
+# --- Inspection ---
+
+# List running containers (name, image, status, ports)
+docker ps
+
+# List all containers including stopped ones
+docker ps -a
+
+# Show detailed info of a container (network, ports, mounts, etc.)
+docker inspect <container_name>
+
+# List networks
+docker network ls
+
+# Remove all stopped containers, unused networks and dangling images
+docker system prune
+
+# Remove all unused images (not just dangling ones)
+docker system prune -a
+
+# Remove all unused images, networks, containers and volumes
+docker system prune -a --volumes
+```
 
 ## How to use the API
 

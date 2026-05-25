@@ -68,7 +68,75 @@ Read requests (`GET`) on orders use `ListOrderSerializer` (nested objects); writ
 ## Running locally (Docker Compose)
 
 ```bash
+# Build and start (blocking terminal)
 docker compose up --build
+
+# Build and start in background
+docker compose up --build -d
+
+# View logs of all services (when running in background)
+docker compose logs -f
+
+# View logs of a specific service
+docker compose logs -f web
+
+# Stop containers
+docker compose stop
+
+# Stop and remove containers, images and volumes
+docker compose down --rmi all --volumes
+
+# --- Single container ---
+
+# Build the image
+docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
+
+# Run a single container in background
+docker run --name shoes-store -p 8000:8000 -d study_shoes_store
+
+# Run a single container (blocking terminal)
+docker run --name shoes-store -p 8000:8000 -it study_shoes_store
+
+# Stop a single container
+docker stop shoes-store
+
+# Restart a stopped container
+docker start shoes-store
+
+# Remove a stopped container
+docker rm shoes-store
+
+# Force remove a running container
+docker rm -f shoes-store
+
+# Remove the image
+docker rmi study_shoes_store
+
+# Force remove the image (even if used by a container)
+docker rmi -f study_shoes_store
+
+# --- Inspection ---
+
+# List running containers (name, image, status, ports)
+docker ps
+
+# List all containers including stopped ones
+docker ps -a
+
+# Show detailed info of a container (network, ports, mounts, etc.)
+docker inspect <container_name>
+
+# List networks
+docker network ls
+
+# Remove all stopped containers, unused networks and dangling images
+docker system prune
+
+# Remove all unused images (not just dangling ones)
+docker system prune -a
+
+# Remove all unused images, networks, containers and volumes
+docker system prune -a --volumes
 ```
 
 API available at: http://127.0.0.1:8000
