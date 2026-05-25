@@ -74,6 +74,25 @@ Read requests (`GET`) on orders use `ListOrderSerializer` (nested objects); writ
 - No custom pagination class — uses DRF default page size settings.
 - Colour choices for `Product` are defined as `COLOUR_CHOICES` class constant on the model.
 
+## Commit Message Convention
+
+- Use English for all commit messages.
+- Follow the format: `Type: Short imperative summary`
+- Allowed types:
+  - `Feat`: New feature
+  - `Fix`: Bug fix or CI failure fix
+  - `Docs`: Documentation-only change
+  - `Refactor`: Internal code improvement without behavior change
+  - `Test`: Add or improve tests
+  - `Chore`: Maintenance tasks
+  - `CI`: CI/CD workflow changes
+
+Examples:
+- `Feat: Add Swagger schema endpoint`
+- `Fix: Resolve Ruff lint failures in shoes_api`
+- `Docs: Update API authentication section`
+- `Refactor: Simplify order total value calculation`
+
 ## Running locally (Docker Compose)
 
 ```bash
@@ -162,6 +181,25 @@ docker compose exec web python manage.py createsuperuser
 ```bash
 docker compose exec web python manage.py test shoes_api -v 2
 ```
+
+## Lint Standard (Ruff)
+
+Use the same Ruff scope and flags in local execution and CI to avoid false mismatches.
+
+**CI (`.github/actions/lint/action.yml`)**
+- `cd study_shoes_store`
+- `ruff check shoes_api --select=E,W,F --exclude=shoes_api/migrations`
+- `ruff format shoes_api --check --exclude=shoes_api/migrations`
+
+**Local (inside running `web` container)**
+- `cd /var/www/study_shoes_store`
+- `ruff check shoes_api --select=E,W,F --exclude=shoes_api/migrations`
+- `ruff format shoes_api --check --exclude=shoes_api/migrations`
+
+Troubleshooting when CI fails but local passes:
+- Confirm lint-related changes were committed and pushed before triggering workflow.
+- Re-run workflow for the latest commit SHA on `main`.
+- Compare the CI log command with the standard above (target `shoes_api`, migration exclusion enabled).
 
 **Code Quality Improvements (Completed)**
 1. Environment variables management with `python-decouple` (dev/prod config)

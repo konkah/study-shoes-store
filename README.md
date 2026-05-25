@@ -175,6 +175,8 @@ docker compose exec web sh -lc "cd /var/www/study_shoes_store && ruff check shoe
 docker compose exec web sh -lc "cd /var/www/study_shoes_store && ruff format shoes_api --check --exclude=shoes_api/migrations"
 ```
 
+If CI shows Ruff errors while local lint passes, verify that lint-related changes were committed and pushed before running the workflow, then re-run CI on the latest commit SHA.
+
 ## Continuous Integration (CI/CD)
 
 **Status:** ⏸️ Temporarily paused
