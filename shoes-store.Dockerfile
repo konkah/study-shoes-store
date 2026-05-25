@@ -1,24 +1,19 @@
-FROM ubuntu:24.04
+FROM python:3.13-slim
 LABEL maintainer="Karlos Helton Braga <Konkah>"
 
-RUN apt update
-RUN apt upgrade -y
-RUN apt autoremove -y
-RUN apt autoclean -y
+ENV PIP_TRUSTED_HOST="pypi.org files.pythonhosted.org pypi.python.org"
 
-RUN apt install -y curl
-RUN apt install -y nano
-RUN apt install -y unzip
-RUN apt install -y net-tools
-
-RUN apt install -y python3.12 python3-pip python3-dev
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends ca-certificates curl nano unzip net-tools \
+    && apt-get autoremove -y \
+    && apt-get autoclean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY study_shoes_store /var/www/study_shoes_store
 
-RUN pip3 install --break-system-packages setuptools wheel
-
 WORKDIR /var/www/study_shoes_store
-RUN pip3 install --break-system-packages -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
