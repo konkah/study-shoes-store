@@ -4,10 +4,6 @@ description: Check code style and quality with ruff
 runs:
   using: composite
   steps:
-    - name: Install ruff
-      run: pip install ruff==0.15.14
-      shell: bash
-
     - name: Run ruff check
       run: |
         cd study_shoes_store

@@ -4,10 +4,6 @@ description: Scan for security vulnerabilities with bandit
 runs:
   using: composite
   steps:
-    - name: Install bandit
-      run: pip install bandit==1.8.6
-      shell: bash
-
     - name: Run security scan
       run: |
         cd study_shoes_store
