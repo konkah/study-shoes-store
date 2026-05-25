@@ -150,10 +150,11 @@ docker compose exec web python manage.py test shoes_api.tests.ClientSerializerTe
 docker compose exec web python manage.py test shoes_api -v 2
 
 # Run tests with coverage report
-docker compose exec web pip install coverage
-docker compose exec web coverage run --source='shoes_api' manage.py test shoes_api
-docker compose exec web coverage report
+docker compose exec web sh -lc "cd /var/www/study_shoes_store && coverage run --source='shoes_api' manage.py test shoes_api"
+docker compose exec web sh -lc "cd /var/www/study_shoes_store && coverage report"
 ```
+
+> **Note:** `coverage` is versioned in `study_shoes_store/requirements.txt`. If the command is not found in a running container, rebuild or refresh dependencies.
 
 ## Manual lint (Ruff)
 

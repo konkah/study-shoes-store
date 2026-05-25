@@ -16,6 +16,9 @@ This is a local study project — there is no production environment, no Docker 
 - **python-decouple** 3.8 (environment variables)
 - **gunicorn** 23.0.0 (WSGI server)
 - **whitenoise** 6.9.0 (static files)
+- **ruff** 0.15.14 (lint and formatting checks)
+- **bandit** 1.8.6 (security scan)
+- **coverage** 7.5.4 (test coverage report)
 - **SQLite** (local database)
 - **Docker + Docker Compose** (python:3.13-slim base image, used only for local testing)
 
@@ -219,6 +222,30 @@ Troubleshooting when CI fails but local passes:
 - Confirm security-related changes were committed and pushed before triggering workflow.
 - Re-run workflow for the latest commit SHA on `main`.
 - Compare the CI log command with the standard above (target `shoes_api`, migration exclusion enabled).
+
+## Test and Coverage Standard
+
+Use the same test scope and coverage command in local execution and CI.
+
+**CI (`.github/actions/run-tests/action.yml`)**
+- `cd study_shoes_store`
+- `python manage.py test shoes_api -v 2`
+
+**CI (`.github/actions/coverage-report/action.yml`)**
+- `cd study_shoes_store`
+- `coverage run --source='shoes_api' manage.py test shoes_api`
+- `coverage report`
+
+**Local (inside running `web` container)**
+- `cd /var/www/study_shoes_store`
+- `python manage.py test shoes_api -v 2`
+- `coverage run --source='shoes_api' manage.py test shoes_api`
+- `coverage report`
+
+Troubleshooting when CI fails but local passes:
+- Confirm test-related changes were committed and pushed before triggering workflow.
+- Re-run workflow for the latest commit SHA on `main`.
+- If `coverage` is not found locally, rebuild or refresh dependencies in the running container.
 
 **Code Quality Improvements (Completed)**
 1. Environment variables management with `python-decouple` (dev/prod config)
