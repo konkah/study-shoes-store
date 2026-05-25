@@ -13,7 +13,7 @@ This is a local study project — there is no production environment, no Docker 
 - **django-filter** 25.2
 - **validate-docbr** 2.0.0 (CPF validation)
 - **SQLite** (local database)
-- **Docker** (Ubuntu 24.04 base image, used only for local testing)
+- **Docker + Docker Compose** (Ubuntu 24.04 base image, used only for local testing)
 
 ## Project structure
 
@@ -24,6 +24,8 @@ study_shoes_store/
   shoes_api/          # main app: models, views, serializers, urls
   study_shoes_store/  # Django project config (settings, urls, wsgi, asgi)
 shoes-store.Dockerfile
+docker-compose.yml
+entrypoint.sh
 ```
 
 ## Domain models
@@ -63,14 +65,10 @@ Read requests (`GET`) on orders use `ListOrderSerializer` (nested objects); writ
 - No custom pagination class — uses DRF default page size settings.
 - Colour choices for `Product` are defined as a list of tuples directly on the model field.
 
-## Running locally (Docker)
+## Running locally (Docker Compose)
 
 ```bash
-# Build
-docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
-
-# Run
-docker run --name shoes-store -it -p 8000:8000 study_shoes_store
+docker compose up --build
 ```
 
 API available at: http://127.0.0.1:8000
