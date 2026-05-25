@@ -20,9 +20,9 @@ docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
 
 ## How to use the API
 
-O endereço da API depende do IP da máquina docker. Usualmente, o docker sobe a máquina no IP 172.17.0.2. A porta da API é 8000. Nesse caso, o endereço final da API é: http://172.17.0.2:8000.
+The API address depends on the Docker container's IP. Typically, Docker assigns the IP 172.17.0.2. The API port is 8000. In that case, the full API address is: http://172.17.0.2:8000.
 
-Só é possível utilizar a API com login. O usuário **admin** com senha **admin** é inserido na criação da máquina em docker, para facilitar a manipulação da API.
+Authentication is required to use the API. The user **admin** with password **admin** is created when the Docker container is built, to make it easier to interact with the API.
 
 O tipo de autenticação usada é o Basic Authentication. É possível entender como ela funciona no seguinte link:
 
@@ -487,28 +487,28 @@ Para fazer a ordenação por valor ou data, adicionar na url o parâmetro `order
 **Method:** `DELETE`
 **Response:** *empty*
 
-## Decisões de arquitetura
+## Architecture decisions
 
-### Usado usuário do django como cadastro do vendedor
+### Django user used as seller record
 
-Para o vendedor ter login e senha, foi usado o usuário nativo do django admin.
+To provide login and password for sellers, Django's built-in admin user model was used.
 
-### CPF colocado com 14 dígitos
+### CPF set with 14 digits
 
-O Serializador do Rest Framework não deixa a pessoa colocar um CPF com pontos e traços,
-mesmo eles sendo removidos antes de ir para o banco de dados, se o CPF não tiver
-14 caracteres no banco de dados.
+The Rest Framework serializer does not allow entering a CPF with dots and dashes,
+even though they are stripped before being saved to the database, unless the CPF
+has 14 characters in the database.
 
-## Bibliotecas externas usadas
+## External libraries used
 
 ### Django Rest Framework (3.12.4)
 
-Usada para facilitar o desenvolvimento da API.
+Used to simplify API development.
 
 https://www.django-rest-framework.org/
 
 ### Validate DOC BR (1.8.2)
 
-Usada para validar o CPF do cliente.
+Used to validate the customer's CPF.
 
 https://pypi.org/project/validate-docbr/
