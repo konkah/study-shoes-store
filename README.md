@@ -155,6 +155,26 @@ docker compose exec web coverage run --source='shoes_api' manage.py test shoes_a
 docker compose exec web coverage report
 ```
 
+## Manual lint (Ruff)
+
+Run lint before opening a PR, after refactors, or whenever you change files in `shoes_api/`.
+
+The commands below are executed inside the running `web` container and use the same working directory, target, and flags as CI (excluding migrations):
+
+```bash
+# 1) Auto-fix lint issues (when possible)
+docker compose exec web sh -lc "cd /var/www/study_shoes_store && ruff check shoes_api --select=E,W,F --exclude=shoes_api/migrations --fix"
+
+# 2) Apply formatting
+docker compose exec web sh -lc "cd /var/www/study_shoes_store && ruff format shoes_api --exclude=shoes_api/migrations"
+
+# 3) Validate lint without changing files
+docker compose exec web sh -lc "cd /var/www/study_shoes_store && ruff check shoes_api --select=E,W,F --exclude=shoes_api/migrations"
+
+# 4) Validate formatting without changing files
+docker compose exec web sh -lc "cd /var/www/study_shoes_store && ruff format shoes_api --check --exclude=shoes_api/migrations"
+```
+
 ## Continuous Integration (CI/CD)
 
 **Status:** ⏸️ Temporarily paused
