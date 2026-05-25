@@ -4,10 +4,6 @@ description: Generate and upload coverage report
 runs:
   using: composite
   steps:
-    - name: Install coverage
-      run: pip install coverage
-      shell: bash
-
     - name: Generate coverage
       run: |
         cd study_shoes_store
