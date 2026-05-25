@@ -50,4 +50,4 @@ class Order(models.Model):
     products = models.ManyToManyField(Product)
     
     def __str__(self):
-        return self.order_number + ' - ' + self.total_value
+        return f'{self.order_number} - {self.total_value}'

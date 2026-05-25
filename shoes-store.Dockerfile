@@ -1,3 +1,4 @@
+# check=skip=SecretsUsedInArgOrEnv
 FROM ubuntu:24.04
 LABEL maintainer="Karlos Helton Braga <Konkah>"
 
@@ -11,28 +12,24 @@ RUN apt install -y nano
 RUN apt install -y unzip
 RUN apt install -y net-tools
 
-RUN apt install -y python3.12 
-RUN apt install python3-pip -y
-RUN apt install python3-dev -y 
+RUN apt install -y python3.12 python3-pip python3-dev
 
 COPY study_shoes_store /var/www/study_shoes_store
-RUN rm /var/www/study_shoes_store/db.sqlite3
+RUN rm -f /var/www/study_shoes_store/db.sqlite3
 
-RUN python3 -m pip install -U pip
-RUN python3 -m pip install -U setuptools
-RUN python3 -m pip install -U wheel
+RUN pip3 install --break-system-packages setuptools wheel
 
 WORKDIR /var/www/study_shoes_store
-RUN python3 -m pip install -r requirements.txt
+RUN pip3 install --break-system-packages -r requirements.txt
 
 RUN python3 manage.py migrate
 
 ENV DJANGO_SUPERUSER_USERNAME=admin
 ENV DJANGO_SUPERUSER_EMAIL=admin@admin.com
-ENV DJANGO_SUPERUSER_PASSWORD=admin
-RUN python3 manage.py createsuperuser --no-input
+ARG DJANGO_SUPERUSER_PASSWORD=admin
+RUN DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD} python3 manage.py createsuperuser --no-input
 
 EXPOSE 8000
 
 #CMD bash
-CMD python3 manage.py runserver
+CMD ["python3", "manage.py", "runserver"]
