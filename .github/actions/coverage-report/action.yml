@@ -9,6 +9,7 @@ runs:
         cd study_shoes_store
         coverage run --source='shoes_api' manage.py test shoes_api
         coverage report
+        coverage xml -o coverage.xml
       shell: bash
 
     - name: Upload to Codecov
