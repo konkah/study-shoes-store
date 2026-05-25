@@ -15,7 +15,7 @@ jobs:
       image: python:3.13-slim
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/setup-python-env
 
   lint:
@@ -25,7 +25,7 @@ jobs:
       image: python:3.13-slim
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/setup-python-env
     - uses: ./.github/actions/lint
 
@@ -36,7 +36,7 @@ jobs:
       image: python:3.13-slim
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/setup-python-env
     - uses: ./.github/actions/security
 
@@ -47,7 +47,7 @@ jobs:
       image: python:3.13-slim
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/setup-python-env
     - uses: ./.github/actions/run-tests
     - uses: ./.github/actions/coverage-report

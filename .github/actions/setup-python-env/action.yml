@@ -8,6 +8,12 @@ runs:
       run: python -m pip install --upgrade pip
       shell: bash
 
+    - name: Set CI environment defaults
+      run: |
+        # Required by python-decouple in settings.py during CI jobs.
+        echo "SECRET_KEY=${SECRET_KEY:-ci-secret-key}" >> "$GITHUB_ENV"
+      shell: bash
+
     - name: Install dependencies
       run: pip install -r study_shoes_store/requirements.txt
       shell: bash
