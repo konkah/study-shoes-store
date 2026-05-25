@@ -110,6 +110,58 @@ docker compose exec web python manage.py createsuperuser
 
 > **Note:** migration files generated inside the container must be copied to the host and committed to the repository. The project directory is copied into the image at build time and is not mounted as a volume.
 
+## Running tests
+
+All tests are written using Django's `TestCase` and DRF's `APITestCase`. Tests cover:
+- **CPF validation**: Valid CPF acceptance, invalid CPF rejection, formatting, uniqueness
+- **Order calculations**: Total value calculation from product values
+- **API authentication**: Endpoint protection and authentication requirements
+
+```bash
+# Run all tests
+docker compose exec web python manage.py test
+
+# Run tests for shoes_api app only
+docker compose exec web python manage.py test shoes_api
+
+# Run a specific test class
+docker compose exec web python manage.py test shoes_api.tests.ClientSerializerTestCase
+
+# Run a specific test method
+docker compose exec web python manage.py test shoes_api.tests.ClientSerializerTestCase.test_valid_cpf_accepted
+
+# Run with verbose output (v=2 shows test method names)
+docker compose exec web python manage.py test shoes_api -v 2
+
+# Run tests with coverage report
+docker compose exec web pip install coverage
+docker compose exec web coverage run --source='shoes_api' manage.py test shoes_api
+docker compose exec web coverage report
+```
+
+## Code Quality Improvements
+
+This project implements systematic code quality improvements:
+
+| # | Improvement | Details |
+|---|---|---|
+| 1 | Environment Management | `python-decouple` for secure config from `.env` |
+| 2 | Authentication | Explicit `SessionAuthentication` + `BasicAuthentication` |
+| 3 | WSGI Server | Production-ready `gunicorn` (replaces Django runserver) |
+| 4 | Static Files | `WhiteNoise` middleware for CSS/JS serving |
+| 5 | CSRF Security | `CSRF_TRUSTED_ORIGINS` from environment |
+| 6 | Monetary Precision | `DecimalField` for `value` and `total_value` |
+| 7 | Data Integrity | `unique=True` constraint on `Order.order_number` |
+| 8 | Code Constants | `Product.COLOUR_CHOICES` class constant |
+| 9 | CPF Formatting | `CPF().mask()` method for proper formatting |
+| 10 | Calculation Logic | `sum()` generator for `Order.total_value` |
+| 11 | Test Coverage | 15 comprehensive tests across serializers and API |
+
+**Test Results:** ✅ All 15 tests passing
+- 4 tests: CPF validation, formatting, uniqueness
+- 3 tests: Order total_value calculation
+- 8 tests: API authentication requirements
+
 ## How to use the API
 
 The API address is: http://127.0.0.1:8000.

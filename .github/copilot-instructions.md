@@ -191,4 +191,29 @@ docker compose exec web python manage.py createsuperuser
 
 > **Note:** migrations must always be copied from the container to the host and committed to the repository, since the project directory is not mounted as a volume — it is copied into the image at build time.
 
+## Code Quality & Testing
+
+**Test Suite (15 tests)**
+- `ClientSerializerTestCase`: 4 tests for CPF validation, formatting, and uniqueness
+- `OrderSerializerTestCase`: 3 tests for total_value calculation and constraints
+- `APIAuthenticationTestCase`: 8 tests for endpoint authentication across all 4 resources
+
+**Run all tests:**
+```bash
+docker compose exec web python manage.py test shoes_api -v 2
+```
+
+**Code Quality Improvements (Completed)**
+1. Environment variables management with `python-decouple` (dev/prod config)
+2. Explicit authentication classes (`SessionAuthentication` + `BasicAuthentication`)
+3. Production-ready WSGI server (`gunicorn` 23.0.0)
+4. Static file serving with `WhiteNoise` middleware
+5. CSRF protection via `CSRF_TRUSTED_ORIGINS` environment variable
+6. Monetary precision: `DecimalField` for `Product.value` and `Order.total_value`
+7. Unique constraint on `Order.order_number` to prevent duplicates
+8. Product colors as `COLOUR_CHOICES` class constant
+9. CPF formatting using `CPF().mask()` method from `validate-docbr`
+10. Order total_value calculation using Pythonic `sum()` generator expression
+11. Comprehensive test coverage for serializers and API endpoints
+
 API available at: http://127.0.0.1:8000
