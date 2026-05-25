@@ -275,12 +275,18 @@ Alternative documentation formats:
 **Status:** ⏸️ Temporarily paused due to GitHub Enterprise restrictions.
 
 Workflow configured at `.github/workflows/tests.yml` with 4 jobs:
-- **setup**: Install Python dependencies
+- **setup**: Install system dependencies (`git`, `curl`, `gpg`), Python dependencies, and CI environment defaults
 - **lint**: Code style and quality checks (ruff)
 - **security**: Security vulnerability scanning (bandit)
 - **test**: Run test suite and generate coverage reports
 
 Custom actions stored in `.github/actions/` for modularity and reusability.
+
+Runtime and action version standard:
+- Use `actions/checkout@v5` (Node 24 compatible).
+- Use `codecov/codecov-action@v6` in coverage upload step.
+- Keep workflow env `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"`.
+- Keep CI fallback for settings loading via `SECRET_KEY=ci-secret-key` when unset.
 
 **To enable:** Contact GitHub Enterprise Administrator to enable GitHub-hosted runners, then uncomment `push` and `pull_request` triggers in workflow.
 
