@@ -5,7 +5,7 @@ ENV PIP_TRUSTED_HOST="pypi.org files.pythonhosted.org pypi.python.org"
 
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends ca-certificates curl nano unzip net-tools \
+    && apt-get install -y --no-install-recommends ca-certificates curl git gnupg nano unzip net-tools \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && rm -rf /var/lib/apt/lists/*
