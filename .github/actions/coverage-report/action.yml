@@ -1,0 +1,23 @@
+name: Generate Coverage Report
+description: Generate and upload coverage report
+
+runs:
+  using: composite
+  steps:
+    - name: Install coverage
+      run: pip install coverage
+      shell: bash
+
+    - name: Generate coverage
+      run: |
+        cd study_shoes_store
+        coverage run --source='shoes_api' manage.py test shoes_api
+        coverage report
+      shell: bash
+
+    - name: Upload to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./study_shoes_store/.coverage
+        flags: unittests
+        fail_ci_if_error: false

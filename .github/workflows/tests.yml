@@ -1,0 +1,53 @@
+name: Tests
+
+on:
+  workflow_dispatch:
+
+  # push:
+  #   branches: [ main, master, develop ]
+  # pull_request:
+  #   branches: [ main, master, develop ]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.13-slim
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/setup-python-env
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.13-slim
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/setup-python-env
+    - uses: ./.github/actions/lint
+
+  security:
+    needs: setup
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.13-slim
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/setup-python-env
+    - uses: ./.github/actions/security
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.13-slim
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/setup-python-env
+    - uses: ./.github/actions/run-tests
+    - uses: ./.github/actions/coverage-report

@@ -1,0 +1,18 @@
+name: Security Check
+description: Scan for security vulnerabilities with bandit
+
+runs:
+  using: composite
+  steps:
+    - name: Install bandit
+      run: pip install bandit
+      shell: bash
+
+    - name: Run security scan
+      run: |
+        bandit -r study_shoes_store/shoes_api -f json -o bandit-report.json || true
+      shell: bash
+
+    - name: Display security report
+      run: bandit -r study_shoes_store/shoes_api
+      shell: bash

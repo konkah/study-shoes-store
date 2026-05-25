@@ -1,0 +1,19 @@
+name: Lint Code
+description: Check code style and quality with ruff
+
+runs:
+  using: composite
+  steps:
+    - name: Install ruff
+      run: pip install ruff
+      shell: bash
+
+    - name: Run ruff check
+      run: |
+        ruff check study_shoes_store/shoes_api --select=E,W,F
+      shell: bash
+
+    - name: Run ruff format check
+      run: |
+        ruff format study_shoes_store/shoes_api --check
+      shell: bash

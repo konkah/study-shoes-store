@@ -1,0 +1,11 @@
+name: Run Tests
+description: Execute test suite
+
+runs:
+  using: composite
+  steps:
+    - name: Run tests
+      run: |
+        cd study_shoes_store
+        python manage.py test shoes_api -v 2
+      shell: bash
