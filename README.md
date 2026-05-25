@@ -2,6 +2,16 @@
 
 author: Karlos Helton Braga
 
+## Setup
+
+Before running the project for the first time, copy the environment variables template:
+
+```bash
+cp env/.env.example env/.env
+```
+
+Edit `env/.env` with your values. The default values in the file work out of the box for local development.
+
 ## How to run the project
 
 ```bash
@@ -75,6 +85,30 @@ docker system prune -a
 # Remove all unused images, networks, containers and volumes
 docker system prune -a --volumes
 ```
+
+## Django management commands
+
+All management commands must be run inside the running container:
+
+```bash
+# Apply pending migrations
+docker compose exec web python manage.py migrate
+
+# Generate migrations after changing models
+docker compose exec web python manage.py makemigrations shoes_api --name <migration_name>
+
+# Copy a generated migration file from the container to the host
+docker compose cp web:/var/www/study_shoes_store/shoes_api/migrations/<file>.py \
+  /absolute/path/to/study_shoes_store/shoes_api/migrations/
+
+# Open a Django shell
+docker compose exec web python manage.py shell
+
+# Create a superuser manually
+docker compose exec web python manage.py createsuperuser
+```
+
+> **Note:** migration files generated inside the container must be copied to the host and committed to the repository. The project directory is copied into the image at build time and is not mounted as a volume.
 
 ## How to use the API
 
@@ -576,3 +610,21 @@ https://www.django-rest-framework.org/
 Used to validate the customer's CPF.
 
 https://pypi.org/project/validate-docbr/
+
+### python-decouple (3.8)
+
+Used to manage environment variables from the `env/.env` file.
+
+https://pypi.org/project/python-decouple/
+
+### Gunicorn (23.0.0)
+
+WSGI server used to serve the application in the Docker container.
+
+https://gunicorn.org/
+
+### WhiteNoise (6.9.0)
+
+Used to serve static files (admin CSS/JS) directly from the WSGI application without a separate web server.
+
+https://whitenoise.readthedocs.io/
