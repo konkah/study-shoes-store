@@ -1,24 +1,24 @@
 # Study Shoes Store
 
-autor: Karlos Helton Braga
+author: Karlos Helton Braga
 
-## Como rodar o projeto
+## How to run the project
 
-A máquina docker para rodar o projeto está disponível no dockerhub.
-
-```
-docker run --name shoes-store -it -p 8000:8000 konkah/study_shoes_store
-```
-
-Para sair, aperte CTRL+C.
-
-Caso queira fazer o build a partir do dockerfile disponível no repositório, execute:
+The Docker image for this project is available on Docker Hub.
 
 ```
-docker build . -f shoes-store.Dockerfile -t konkah/study_shoes_store --network=host
+docker run --name shoes-store -it -p 8000:8000 study_shoes_store
 ```
 
-## Como utilizar a api
+To stop, press CTRL+C.
+
+If you want to build from the Dockerfile available in the repository, run:
+
+```
+docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
+```
+
+## How to use the API
 
 O endereço da API depende do IP da máquina docker. Usualmente, o docker sobe a máquina no IP 172.17.0.2. A porta da API é 8000. Nesse caso, o endereço final da API é: http://172.17.0.2:8000.
 
