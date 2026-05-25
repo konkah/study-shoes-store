@@ -5,5 +5,8 @@ services:
       dockerfile: shoes-store.Dockerfile
     ports:
       - "8000:8000"
+    volumes:
+      - ./study_shoes_store:/var/www/study_shoes_store  # ← código
+      - ./env:/var/www/env                              # ← .env
     env_file:
       - env/.env
