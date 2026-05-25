@@ -5,11 +5,25 @@ env:
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main, master, develop ]
+    paths:
+      - "study_shoes_store/**"
+      - ".github/workflows/tests.yml"
+      - ".github/actions/**"
+      - "shoes-store.Dockerfile"
+      - "docker-compose.yml"
+      - "study_shoes_store/requirements.txt"
 
-  # push:
-  #   branches: [ main, master, develop ]
-  # pull_request:
-  #   branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+    paths:
+      - "study_shoes_store/**"
+      - ".github/workflows/tests.yml"
+      - ".github/actions/**"
+      - "shoes-store.Dockerfile"
+      - "docker-compose.yml"
+      - "study_shoes_store/requirements.txt"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
