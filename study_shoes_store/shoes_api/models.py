@@ -12,21 +12,20 @@ class Batch(models.Model):
 
 
 class Product(models.Model):
-    identifier_code = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-    batch_number = models.ForeignKey(Batch, on_delete=models.PROTECT)
-    colours = [
+    COLOUR_CHOICES = [
         ('red', 'Vermelho'),
         ('blue', 'Azul'),
         ('green', 'Verde'),
         ('yellow', 'Amarelo'),
         ('orange', 'Laranja'),
         ('purple', 'Roxo'),
-
     ]
-    colour = models.CharField(max_length=20, choices=colours, default='blue')
+    identifier_code = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    batch_number = models.ForeignKey(Batch, on_delete=models.PROTECT)
+    colour = models.CharField(max_length=20, choices=COLOUR_CHOICES, default='blue')
     description = models.CharField(max_length=50)
-    value = models.FloatField()
+    value = models.DecimalField(max_digits=10, decimal_places=2)
     
     def __str__(self):
         return self.identifier_code + ' - ' + self.name
@@ -42,10 +41,10 @@ class Client(models.Model):
 
 
 class Order(models.Model):
-    order_number = models.IntegerField()
+    order_number = models.IntegerField(unique=True)
     client = models.ForeignKey(Client, on_delete=models.PROTECT)
     order_date = models.DateField()
-    total_value = models.FloatField()
+    total_value = models.DecimalField(max_digits=10, decimal_places=2)
     seller = models.ForeignKey(User, on_delete=models.PROTECT)
     products = models.ManyToManyField(Product)
     
