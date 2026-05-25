@@ -199,17 +199,20 @@ If CI shows Bandit errors while local scan passes, verify that security-related 
 **Status:** ⏸️ Temporarily paused
 
 A GitHub Actions workflow has been configured at `.github/workflows/tests.yml` with the following jobs:
-- **setup**: Install system dependencies (`git`, `curl`, `gpg`), Python dependencies, and CI defaults
 - **lint**: Code style checks (ruff)
-- **security**: Security scanning (bandit)
-- **test**: Run test suite and generate coverage reports
+- **security**: Security scanning (bandit) + JSON artifact upload (`bandit-report.json`)
+- **test**: Test suite + coverage gate + coverage artifact upload + Codecov upload
 
 Each job is implemented as a reusable custom action in `.github/actions/`.
 
 Current workflow compatibility notes:
-- `actions/checkout@v5` is used to stay compatible with Node 24 runners.
-- Coverage upload uses `codecov/codecov-action@v6`.
-- Setup action exports `SECRET_KEY=ci-secret-key` when not provided in CI.
+- External actions are pinned by SHA in workflow steps (with version comments).
+- Setup action (`.github/actions/setup-python-env/action.yml`) installs system dependencies and Python dependencies, exports `SECRET_KEY=ci-secret-key` fallback, and caches pip packages with `actions/cache@v5`.
+- Coverage action (`.github/actions/coverage-report/action.yml`) enforces `coverage report --fail-under=90`, generates `coverage.xml`, and uploads to Codecov using OIDC (`use_oidc: true`).
+- Workflow uses explicit permissions (`contents: read`, `actions: write`, `id-token: write`) and concurrency cancellation for stale runs.
+- Jobs include `timeout-minutes` and artifact retention (`retention-days: 7`).
+- `push` and `pull_request` triggers use path filters to reduce unnecessary CI runs.
+- Dependabot updates GitHub Actions weekly via `.github/dependabot.yml`.
 
 Local Docker parity note:
 - `shoes-store.Dockerfile` installs `git`, `curl`, and `gnupg` so local containers match CI runtime dependencies.
