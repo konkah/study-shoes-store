@@ -10,6 +10,7 @@ This is a local study project — there is no production environment, no Docker 
 - **Python** 3.13
 - **Django** 6.0.5
 - **Django REST Framework** 3.17.1
+- **drf-spectacular** 0.27.2 (Swagger/OpenAPI documentation)
 - **django-filter** 25.2
 - **validate-docbr** 2.0.0 (CPF validation)
 - **python-decouple** 3.8 (environment variables)
@@ -174,5 +175,14 @@ docker compose exec web python manage.py test shoes_api -v 2
 9. CPF formatting using `CPF().mask()` method from `validate-docbr`
 10. Order total_value calculation using Pythonic `sum()` generator expression
 11. Comprehensive test coverage for serializers and API endpoints
+12. API documentation with Swagger/OpenAPI using `drf-spectacular`
+
+## API Documentation
+
+Interactive Swagger UI available at: http://127.0.0.1:8000/api/docs/
+
+Alternative documentation formats:
+- ReDoc: http://127.0.0.1:8000/api/redoc/
+- OpenAPI Schema: http://127.0.0.1:8000/api/schema/
 
 API available at: http://127.0.0.1:8000

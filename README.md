@@ -172,6 +172,7 @@ This project implements systematic code quality improvements:
 | 9 | CPF Formatting | `CPF().mask()` method for proper formatting |
 | 10 | Calculation Logic | `sum()` generator for `Order.total_value` |
 | 11 | Test Coverage | 15 comprehensive tests across serializers and API |
+| 12 | API Documentation | Swagger/OpenAPI with `drf-spectacular` |
 
 **Test Results:** ✅ All 15 tests passing
 - 4 tests: CPF validation, formatting, uniqueness
@@ -184,19 +185,33 @@ The API address is: http://127.0.0.1:8000.
 
 Authentication is required to use the API. The user **admin** with password **admin** is created when the Docker container is built, to make it easier to interact with the API.
 
-O tipo de autenticação usada é o Basic Authentication. É possível entender como ela funciona no seguinte link:
+The authentication type used is Basic Authentication. You can understand how it works at the following link:
 
-https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Headers/Authorization
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization
 
-Para o usuário e senha citados acima, o header `Authorization` deve ter o valor `Basic YWRtaW46YWRtaW4=`.
+For the credentials mentioned above, the `Authorization` header should have the value `Basic YWRtaW46YWRtaW4=`.
 
-### Paginação
+### API Documentation (Swagger UI)
 
-Todas as listas da API são paginadas. Dessa forma, retornam no json quatro itens:
-- **count:** contagem total de resultados encontrados no banco de dados
-- **next:** url da próxima página (retorna `null` se não houver uma próxima página)
-- **previous:** url da página anterior (retorna `null` se não houver uma página anterior)
-- **results:** resultados da página atual
+Interactive API documentation is available via Swagger UI:
+
+- **Swagger UI:** http://127.0.0.1:8000/api/docs/
+- **ReDoc (alternative):** http://127.0.0.1:8000/api/redoc/
+- **OpenAPI Schema (JSON):** http://127.0.0.1:8000/api/schema/
+
+Use Swagger UI to:
+- ✅ Browse all endpoints
+- ✅ View request/response schemas
+- ✅ Test endpoints directly in the browser
+- ✅ See authentication requirements
+
+### Pagination
+
+All list endpoints in the API are paginated. They return a JSON object with four fields:
+- **count:** total number of results found in the database
+- **next:** URL of the next page (`null` if there is no next page)
+- **previous:** URL of the previous page (`null` if there is no previous page)
+- **results:** results of the current page
 
 ### Lote
 
