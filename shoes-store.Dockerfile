@@ -1,4 +1,3 @@
-# check=skip=SecretsUsedInArgOrEnv
 FROM ubuntu:24.04
 LABEL maintainer="Karlos Helton Braga <Konkah>"
 

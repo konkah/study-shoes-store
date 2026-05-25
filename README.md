@@ -4,7 +4,13 @@ author: Karlos Helton Braga
 
 ## How to run the project
 
-The Docker image for this project is available on Docker Hub.
+First, build the Docker image from the Dockerfile available in the repository:
+
+```
+docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
+```
+
+Then, run the container:
 
 ```
 docker run --name shoes-store -it -p 8000:8000 study_shoes_store
@@ -12,15 +18,9 @@ docker run --name shoes-store -it -p 8000:8000 study_shoes_store
 
 To stop, press CTRL+C.
 
-If you want to build from the Dockerfile available in the repository, run:
-
-```
-docker build . -f shoes-store.Dockerfile -t study_shoes_store --network=host
-```
-
 ## How to use the API
 
-The API address depends on the Docker container's IP. Typically, Docker assigns the IP 172.17.0.2. The API port is 8000. In that case, the full API address is: http://172.17.0.2:8000.
+The API address is: http://127.0.0.1:8000.
 
 Authentication is required to use the API. The user **admin** with password **admin** is created when the Docker container is built, to make it easier to interact with the API.
 
@@ -501,13 +501,19 @@ has 14 characters in the database.
 
 ## External libraries used
 
-### Django Rest Framework (3.12.4)
+### Django (6.0.5)
+
+Web framework used to build the API.
+
+https://www.djangoproject.com/
+
+### Django Rest Framework (3.17.1)
 
 Used to simplify API development.
 
 https://www.django-rest-framework.org/
 
-### Validate DOC BR (1.8.2)
+### Validate DOC BR (2.0.0)
 
 Used to validate the customer's CPF.
 
