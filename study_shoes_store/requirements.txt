@@ -3,5 +3,6 @@ Django==6.0.5
 django-filter==25.2
 djangorestframework==3.17.1
 Markdown==3.10.2
+python-decouple==3.8
 sqlparse==0.5.5
 validate-docbr==2.0.0
