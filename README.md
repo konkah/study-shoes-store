@@ -177,6 +177,22 @@ docker compose exec web sh -lc "cd /var/www/study_shoes_store && ruff format sho
 
 If CI shows Ruff errors while local lint passes, verify that lint-related changes were committed and pushed before running the workflow, then re-run CI on the latest commit SHA.
 
+## Manual security (Bandit)
+
+Run security scan before opening a PR, especially after changes in serializers, views, and authentication logic.
+
+The commands below are executed inside the running `web` container and use the same working directory, target, and exclusions as CI:
+
+```bash
+# 1) Generate JSON report without failing the command
+docker compose exec web sh -lc "cd /var/www/study_shoes_store && bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py -f json -o bandit-report.json || true"
+
+# 2) Display report in terminal (fails if issues are found)
+docker compose exec web sh -lc "cd /var/www/study_shoes_store && bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py"
+```
+
+If CI shows Bandit errors while local scan passes, verify that security-related changes were committed and pushed before running the workflow, then re-run CI on the latest commit SHA.
+
 ## Continuous Integration (CI/CD)
 
 **Status:** ⏸️ Temporarily paused

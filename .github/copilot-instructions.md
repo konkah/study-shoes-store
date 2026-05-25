@@ -201,6 +201,25 @@ Troubleshooting when CI fails but local passes:
 - Re-run workflow for the latest commit SHA on `main`.
 - Compare the CI log command with the standard above (target `shoes_api`, migration exclusion enabled).
 
+## Security Standard (Bandit)
+
+Use the same Bandit scope and exclusions in local execution and CI.
+
+**CI (`.github/actions/security/action.yml`)**
+- `cd study_shoes_store`
+- `bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py -f json -o bandit-report.json || true`
+- `bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py`
+
+**Local (inside running `web` container)**
+- `cd /var/www/study_shoes_store`
+- `bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py -f json -o bandit-report.json || true`
+- `bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py`
+
+Troubleshooting when CI fails but local passes:
+- Confirm security-related changes were committed and pushed before triggering workflow.
+- Re-run workflow for the latest commit SHA on `main`.
+- Compare the CI log command with the standard above (target `shoes_api`, migration exclusion enabled).
+
 **Code Quality Improvements (Completed)**
 1. Environment variables management with `python-decouple` (dev/prod config)
 2. Explicit authentication classes (`SessionAuthentication` + `BasicAuthentication`)
