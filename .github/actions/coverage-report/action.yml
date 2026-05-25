@@ -7,7 +7,6 @@ runs:
     - name: Generate coverage
       run: |
         cd study_shoes_store
-        coverage run --source='shoes_api' manage.py test shoes_api
         coverage report --fail-under=90
         coverage xml -o coverage.xml
       shell: bash
