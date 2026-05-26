@@ -293,7 +293,7 @@ Runtime and action version standard:
 - Keep workflow `concurrency` enabled and job `timeout-minutes` configured.
 - Keep artifact retention at `retention-days: 7`.
 - Keep test coverage gate at `coverage report --fail-under=90`.
-- Keep Codecov auth via OIDC (`use_oidc: true`).
+- Keep Codecov auth via OIDC (`use_oidc: true`) and skip Codecov upload for forked pull requests.
 - Keep path filters enabled for `push` and `pull_request` triggers.
 - Keep Dependabot for GitHub Actions updates in `.github/dependabot.yml` (weekly).
 
