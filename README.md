@@ -220,7 +220,7 @@ Local Docker parity note:
 **Current limitation:** GitHub-hosted runners are disabled for this repository (GitHub Enterprise restriction). To enable CI/CD automation:
 1. Contact your GitHub Enterprise Administrator
 2. Request to enable "GitHub-hosted runners" for this repository
-3. Once enabled, uncomment the `push` and `pull_request` triggers in `.github/workflows/tests.yml`
+3. Once enabled, validate workflow execution on `push` and `pull_request` events in `.github/workflows/tests.yml`
 
 Alternatively, a self-hosted runner can be configured on your own infrastructure.
 

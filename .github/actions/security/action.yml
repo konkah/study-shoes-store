@@ -4,14 +4,8 @@ description: Scan for security vulnerabilities with bandit
 runs:
   using: composite
   steps:
-    - name: Run security scan
+    - name: Run security scan and generate JSON report
       run: |
         cd study_shoes_store
-        bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py -f json -o bandit-report.json || true
-      shell: bash
-
-    - name: Display security report
-      run: |
-        cd study_shoes_store
-        bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py
+        bandit -r shoes_api --exclude shoes_api/migrations,shoes_api/tests.py -f json -o bandit-report.json
       shell: bash

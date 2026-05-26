@@ -297,6 +297,6 @@ Runtime and action version standard:
 - Keep path filters enabled for `push` and `pull_request` triggers.
 - Keep Dependabot for GitHub Actions updates in `.github/dependabot.yml` (weekly).
 
-**To enable:** Contact GitHub Enterprise Administrator to enable GitHub-hosted runners, then uncomment `push` and `pull_request` triggers in workflow.
+**To enable:** Contact GitHub Enterprise Administrator to enable GitHub-hosted runners, then validate execution for `push` and `pull_request` triggers in workflow.
 
 API available at: http://127.0.0.1:8000
