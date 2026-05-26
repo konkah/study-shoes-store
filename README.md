@@ -207,9 +207,9 @@ Each job is implemented as a reusable custom action in `.github/actions/`.
 
 Current workflow compatibility notes:
 - External actions are pinned by SHA in workflow steps (with version comments).
-- Setup action (`.github/actions/setup-python-env/action.yml`) installs system dependencies and Python dependencies, exports `SECRET_KEY=ci-secret-key` fallback, and caches pip packages with `actions/cache@v5`.
+- Setup action (`.github/actions/setup-python-env/action.yml`) installs system dependencies and Python dependencies, exports `SECRET_KEY=ci-secret-key` fallback, and caches pip packages with `actions/cache` pinned by SHA.
 - Coverage action (`.github/actions/coverage-report/action.yml`) enforces `coverage report --fail-under=90`, generates `coverage.xml`, and uploads to Codecov using OIDC (`use_oidc: true`).
-- Workflow uses explicit permissions (`contents: read`, `actions: write`, `id-token: write`) and concurrency cancellation for stale runs.
+- Workflow uses explicit permissions (`contents: read` globally, `id-token: write` only in the `test` job) and concurrency cancellation for stale runs.
 - Jobs include `timeout-minutes` and artifact retention (`retention-days: 7`).
 - `push` and `pull_request` triggers use path filters to reduce unnecessary CI runs.
 - Dependabot updates GitHub Actions weekly via `.github/dependabot.yml`.

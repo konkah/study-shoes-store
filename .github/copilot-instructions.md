@@ -283,13 +283,13 @@ Custom actions stored in `.github/actions/` for modularity and reusability.
 
 Runtime and action version standard:
 - Pin external actions by SHA in workflow/composite actions (keep version comments).
-- Use checkout SHA equivalent to `actions/checkout@v5.0.0`.
+- Use checkout SHA equivalent to `actions/checkout@v6.0.2`.
 - Use upload-artifact SHA equivalent to `actions/upload-artifact@v7.0.1`.
 - Use codecov SHA equivalent to `codecov/codecov-action@v6.0.1`.
-- Use `actions/cache@v5` for pip cache in setup action.
+- Use `actions/cache` pinned by SHA for pip cache in setup action.
 - Keep workflow env `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"`.
 - Keep CI fallback for settings loading via `SECRET_KEY=ci-secret-key` when unset.
-- Keep workflow permissions: `contents: read`, `actions: write`, `id-token: write`.
+- Keep workflow permissions: `contents: read` globally and `id-token: write` only in the `test` job.
 - Keep workflow `concurrency` enabled and job `timeout-minutes` configured.
 - Keep artifact retention at `retention-days: 7`.
 - Keep test coverage gate at `coverage report --fail-under=90`.
