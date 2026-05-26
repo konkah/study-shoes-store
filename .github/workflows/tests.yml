@@ -31,8 +31,6 @@ concurrency:
 
 permissions:
   contents: read
-  actions: write
-  id-token: write
 
 jobs:
   lint:
@@ -67,6 +65,9 @@ jobs:
           if-no-files-found: ignore
 
   test:
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     timeout-minutes: 20
     container:
